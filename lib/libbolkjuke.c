@@ -277,7 +277,21 @@ bolkjuke_get_playlist()
 static int
 scandir_select(const struct dirent *d)
 {
-    return (d->d_type & (DT_DIR | DT_REG));
+    char *extension;
+
+    if (d->d_type == DT_DIR) {
+        if (d->d_name[0] != '.' || strcmp(d->d_name, "..") == 0) {
+            return (1);
+        }
+    } else if (d->d_type == DT_REG) {
+        extension = strrchr(d->d_name, '.');
+        extension++;
+        if (extension && strcasecmp("wav mp3 acc ogg flac", extension)) {
+            return (1);
+        }
+    }
+
+    return (0);
 }
 
 static int
@@ -326,28 +340,16 @@ bolkjuke_read(char *path)
         asprintf(&song->path, "%s/%s", path, dirents[i]->d_name);
 
         if (dirents[i]->d_type & DT_DIR) {
-            if (dirents[i]->d_name[0] != '.' ||
-                    strcmp("..", dirents[i]->d_name) == 0) {
-                song->type = BOLKJUKE_DIRECTORY;
-                song->name = strdup(dirents[i]->d_name);
-            }
+            song->type = BOLKJUKE_DIRECTORY;
+            song->name = strdup(dirents[i]->d_name);
         } else /*if (dirents[i]->d_type & DT_REG)*/ {
+            song->type = BOLKJUKE_FILE;
             extension = strrchr(dirents[i]->d_name, '.');
-            if (extension) {
-                *extension = '\0';
-                extension++;
-                if (strcasestr("wav mp3 ogg", extension) != NULL && strcasestr(
-                        xine_get_file_extensions(xine), extension) != NULL) {
-                    song->type = BOLKJUKE_FILE;
-                    song->name = strdup(dirents[i]->d_name);
-                    bolkjuke_song_parse(song);
-                }
-            }
+            song->name = strndup(dirents[i]->d_name, extension - dirents[i]->d_name);
+            bolkjuke_song_parse(song);
         }
 
-        if (song->name != NULL) {
-            bolkjuke_song_list_append(songlist, song);
-        }
+        bolkjuke_song_list_append(songlist, song);
         bolkjuke_song_release(song);
     }
 
