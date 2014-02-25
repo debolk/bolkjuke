@@ -76,7 +76,7 @@ bolkjuke_new()
 
     state = BOLKJUKE_STOPPED;
 
-    filelist = bolkjuke_read("/usr/home/kees/mp3");
+    filelist = bolkjuke_read(strdup("."));
     playlist = bolkjuke_song_list_new();
 }
 
