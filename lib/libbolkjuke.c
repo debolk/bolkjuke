@@ -283,9 +283,15 @@ scandir_select(const struct dirent *d)
 static int
 scandir_compare(const struct dirent **d1, const struct dirent **d2)
 {
+    if (strcmp((*d1)->d_name, "..") == 0) {
+        return (-1);
+    } else if (strcmp((*d2)->d_name, "..") == 0) {
+        return (1);
+    }
+
     if ((*d1)->d_type & DT_DIR) {
         if ((*d2)->d_type & DT_DIR) {
-            return (alphasort(d1, d2));
+            return (strcasecmp((*d1)->d_name, (*d2)->d_name));
         } else {
             return (-1);
         }
@@ -293,7 +299,7 @@ scandir_compare(const struct dirent **d1, const struct dirent **d2)
         if ((*d2)->d_type & DT_DIR) {
             return (1);
         } else {
-            return (alphasort(d1, d2));
+            return (strcasecmp((*d1)->d_name, (*d2)->d_name));
         }
     }
 }
