@@ -285,8 +285,7 @@ scandir_select(const struct dirent *d)
         }
     } else if (d->d_type == DT_REG) {
         extension = strrchr(d->d_name, '.');
-        extension++;
-        if (extension && strcasecmp("wav mp3 acc ogg flac", extension)) {
+        if (extension && strcasestr("wav mp3 acc ogg flac", ++extension)) {
             return (1);
         }
     }
