@@ -33,27 +33,24 @@ list_destroy(List *list)
 void
 list_normalize(List *list)
 {
+    static int padding = 4;
+
     list->size = bolkjuke_song_list_get_size(list->songlist);
 
-    if (list->size) {
-        if (list->selected < 0)
-            list->selected = 0;
-        else if (list->selected > list->size - 1)
-            list->selected = list->size - 1;
-        if (list->selected < list->top)
-            list->top = list->selected;
-        else if (list->selected > list->top + list->height - 1)
-            list->top = list->selected - list->height + 1;
-        if (list->top > list->size - list->height)
-            list->top = list->size - list->height;
-        if (list->selected < 0)
-            list->selected = 0;
-        if (list->top < 0)
-            list->top = 0;
-    } else {
-        list->selected = -1;
+    if (list->selected < 0)
+        list->selected = 0;
+    else if (list->selected > list->size - 1)
+        list->selected = list->size - 1;
+
+    if (list->top > list->selected - padding)
+        list->top = list->selected - padding;
+    else if (list->top < list->selected - list->height + 1 + padding)
+        list->top = list->selected - list->height + 1 + padding;
+
+    if (list->top > list->size - list->height)
+        list->top = list->size - list->height;
+    if (list->top < 0)
         list->top = 0;
-    }
 }
 
 void
@@ -91,7 +88,7 @@ list_draw(List *list)
             wattron(list->win, A_REVERSE);
         if (bolkjuke_song_get_type(song) || i == list->playing)
             wattron(list->win, A_BOLD);
-        mvwaddnstr(list->win, i, 0, name, list->width);
+        mvwaddnstr(list->win, i - list->top, 0, name, list->width);
         wattroff(list->win, A_REVERSE | A_BOLD);
 
         bolkjuke_song_release(song);
@@ -105,16 +102,12 @@ list_draw(List *list)
 int
 list_get_selected(List *list)
 {
-    list_normalize(list);
-
     return (list->selected);
 }
 
 bolkjuke_song_t *
 list_get_selected_song(List *list)
 {
-    list_normalize(list);
-
     return (bolkjuke_song_list_get(list->songlist, list->selected));
 }
 
@@ -156,4 +149,6 @@ list_driver(List *list, int c)
         // TODO
         break;
     }
+
+    list_normalize(list);
 }
