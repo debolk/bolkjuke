@@ -54,15 +54,12 @@ info_draw(Info *info)
     }
 
     wclear(info->win);
-    wmove(info->win, 0, 0);
 
-    waddstr(info->win, "Title : ");
+    mvwaddstr(info->win, 0, 0, "Title : ");
     waddnstr(info->win, title, info->width - 8);
-    waddch(info->win, '\n');
-    waddstr(info->win, "Artist: ");
+    mvwaddstr(info->win, 1, 0, "Artist: ");
     waddnstr(info->win, artist, info->width - 8);
-    waddch(info->win, '\n');
-    waddstr(info->win, "Album : ");
+    mvwaddstr(info->win, 2, 0, "Album : ");
     waddnstr(info->win, album, info->width - 8);
 
     wsyncup(info->win);

@@ -91,8 +91,7 @@ list_draw(List *list)
             wattron(list->win, A_REVERSE);
         if (bolkjuke_song_get_type(song) || i == list->playing)
             wattron(list->win, A_BOLD);
-        waddnstr(list->win, name, list->width);
-        waddch(list->win, '\n');
+        mvwaddnstr(list->win, i, 0, name, list->width);
         wattroff(list->win, A_REVERSE | A_BOLD);
 
         bolkjuke_song_release(song);
