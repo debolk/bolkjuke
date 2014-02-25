@@ -130,6 +130,10 @@ filelist_input(int c)
     int alt = 0;
     bolkjuke_song_t *song = list_get_selected_song(filelist);
 
+    if (song == NULL) {
+        return;
+    }
+
     if (c == 27) {
         alt = 1;
         c = getch();
