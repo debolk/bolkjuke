@@ -5,6 +5,9 @@ bin_PROGRAMS = bolkjuke
 bolkjuke_SOURCES = \
     main.c main.h \
     settings.c settings.h \
+    controller.c controller.h \
+    gui.c gui.h \
+    input.c input.h \
     window.c window.h \
     info.c info.h \
     list.c list.h \
