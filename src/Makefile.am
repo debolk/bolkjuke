@@ -10,6 +10,6 @@ bolkjuke_SOURCES = \
     list.c list.h \
     bar.c bar.h
 
-bolkjuke_LDADD = $(top_builddir)/lib/libbolkjuke.a
+bolkjuke_LDADD = $(top_builddir)/lib/libbolkjuke.la
 
 bolkjuke_LDFLAGS = -lncurses -lmenu -lxine

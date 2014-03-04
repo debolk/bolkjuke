@@ -1,5 +1,7 @@
 *.o
 *.a
+*.lo
+*.la
 *.log
 *.status
 *.core

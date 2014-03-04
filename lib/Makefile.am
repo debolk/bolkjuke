@@ -1,1 +1,1 @@
-lib_LIBRARIES = libbolkjuke.a
+lib_LTLIBRARIES = libbolkjuke.la
