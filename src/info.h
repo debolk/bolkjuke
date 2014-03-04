@@ -3,7 +3,7 @@
 
 #include <curses.h>
 
-#include "lib/libbolkjuke.h"
+#include "lib/bolkjuke.h"
 
 #include "window.h"
 

@@ -1,7 +1,7 @@
 #ifndef BOLKJUKE_H
 #define	BOLKJUKE_H
 
-#include "lib/libbolkjuke.h"
+#include "lib/bolkjuke.h"
 
 #include "settings.h"
 #include "window.h"
